@@ -305,14 +305,17 @@
 	</div>
 
     <script type="text/javascript">
+    	/////////////////////////////// START
     	$('.collapse').collapse();
     	$("#modal_activate").hide();
     	$("#modal_activate_position").hide();
     	$("#modal_change").hide();
 
-        //Vetor de anotações
+    	///////////////////////////// START MAP AND SVG
+        // Vetor de anotações
 		var annotations = [];
 		var contador = 0;
+
 
         var mapboxTiles = 	L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png', {
     	        						attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
@@ -357,27 +360,27 @@
 
         var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
+        ///////////////////////////////////////////////////////// FUNCTIONS JS
         // Propriedades das anotações inputadas pelo user  
-	    function click_text_color(id){
-	       text_color = $(id).val();
-	    }
+	    // function click_text_color(id){
+	    //    text_color = $(id).val();
+	    // }
 
-	    function click_bg_color(id){
-	       bg_color = $(id).val();
-	       console.log(bg_color);
-	    }
+	    // function click_bg_color(id){
+	    //    bg_color = $(id).val();
+	    //    console.log(bg_color);
+	    // }
 
-	    function click_path_color(id){
-	       path_color = $(id).val();
-	    }
+	    // function click_path_color(id){
+	    //    path_color = $(id).val();
+	    // }
 
+	    /////////////////////// LISTENING
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
-	    // Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
 	    
-
-	    // Criação de uma anotação
+	    ////////////////////// CREATE
         $("#criar_anotacao").click(function(){
             $("#modal_activate").show();
             
@@ -390,21 +393,18 @@
             $("#button_OK").click(function(){
             	annotation_title = $("#title").val();
             	annotation_text = $("#text").val();
-    //        		text_color = $("#text_color").val();
+    			//text_color = $("#text_color").val();
 				// bg_color = $("#bg_color").val();
 				// path_color = $("#path_color").val();
 
-				console.log(annotation_title);
 				$("#modal_activate").hide();
-
 				$("#modal_activate_position").show();
+
 				$("#button_OK_2").click(function(){
 					$("#modal_activate_position").hide();
 					map.on('click', onMapClick);
-          	
 		          	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
 				    var canClick = true
-				    
 				    function onMapClick(e) {
 				        if(canClick){
 				            create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color, path_color);
@@ -465,24 +465,34 @@
            	contador = contador + 1;
     	}
 
+    	var canClick;
+    	// Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
     	function change_annotation(id){
+    		canClick = false;
     		// pegar o conteúdo do título
     		var title = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
     		var text = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
 
+    		$("#title_change").val(title);
+    		$("#text_change").val(text);
 
-	    	 var annotation_title = $("#titulo_change").val(),
-            	annotation_text = $("#text_change").val();
+    		$("#modal_change").show();
 
-		        $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = annotation_title;
-		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = annotation_title;
+    		$("#button_OK_change").click(function(){
+    			$("#modal_change").hide();
+
+    			$("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = $("#title_change").val();
+		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = $("#text_change").val();
+    		});
 	    }
 
     	$("#select_annotation_change").click(function(){
-    		$("#modal_change").show();
-	    	$(".annotation-group").on("click", function(){
-	    		change_annotation($(this)[0].id);
-	    	});
+    		canClick = true;
+    		if(canClick){
+    			$(".annotation-group").on("click", function(){
+	    			change_annotation($(this)[0].id);
+	    		});
+    		}
 	    });
 
 	    $("#select_annotation_remove").click(function(){
