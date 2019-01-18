@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<!-- TODO: Ver o que não é necessário e remover -->
+<!-- TODO: passar o collapse para o bootstrap -->
+<!-- TODO: Incluir o modal para o texto e deixar a criação de anotações livre e somente parar com um botão de parada-->
+<!-- TODO:  -->
+<head>
+    <meta charset="utf-8" />
+    <title>Sistema de anotações</title>
+
+    <!-- CSS -->
+   	<link rel="stylesheet" type="text/css" href="css/styles.css">
+   	<!-- JAVASCRIPT -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <!-- IMPORTAÇÕES D3ANNOTATIONS & DEMAIS LIBS D3 -->
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/1.13.0/d3-annotation.min.js"></script>
+    <!-- MATERIALIZE -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+   	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+   	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+</head>
+<body>
+    <div class = "row container-fluid no-padding my-1 h-100">
+	    <navbar class = "col-sm-4 col-lg-4 no-padding" id="controleMapa">
+		        <div id = "create">
+		            <div class="botao-camada my-1">
+		                <button type="button" data-toggle="collapse" id="botaoCreate" class="btn btn-block btn-outline-main" data-target="#ControleCreate" aria-expanded="false" aria-controls="ControleCreate">Criar anotações</button>
+		            </div>
+		            <div class="collapse" id="ControleCreate">
+		            	<div class="card card-body">
+		            		<h5>Cores</h5>
+					        <br>
+	                        <div id="type" class="section">
+	                                <div class="learn-more" id="schemes-learn-more" title="Learn more"></div>
+	                                <p><b>Selecione o tema de cores:</b></p>
+	                                <p>1: Background</p>
+	                                <p>2: Texto </p>
+	                        </div>
+							<div id="scheme" class="row">
+	                            	<div id="scheme1" class = "colors_style">
+	                                    <label id="tema1">1</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+		                                    	<rect fill="rgb(247,247,247)" width="15" height="15" y="0"></rect>
+				                                <rect fill="rgb(99,99,99)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+	                                
+	                            	<div id="scheme2" class = "colors_style">
+	                                    <label id="tema2">2</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(254,229,217)" width="15" height="15" y="0"></rect>
+				                                <rect fill="rgb(165,15,21)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme3" class = "colors_style">
+	                                    <label id="tema3">3</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(254,240,217)" width="15" height="15" y="0"></rect>
+	                                    		<rect fill="rgb(179,0,0)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme4" class = "colors_style">
+	                                    <label id="tema4">4</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(255,255,178)" width="15" height="15" y="0"></rect>
+		                                    	<rect fill="rgb(189,0,38)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme5" class = "colors_style">
+	                                    <label id="tema5">5</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(255,255,212)" width="15" height="15" y="0"></rect>
+	                                    	<rect fill="rgb(217,95,14)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme6" class = "colors_style">
+	                                    <label id="tema6">6</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(237,248,233)" width="15" height="15" y="0"></rect>
+				                                <rect fill="rgb(0,109,44)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme7" class = "colors_style">
+	                                    <label id="tema7">7</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+		                                    	<rect fill="rgb(194,230,153)" width="15" height="15" y="0"></rect>
+		                                    	<rect fill="rgb(0,104,55)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+	                               
+	                                <div id="scheme9"  class = "colors_style">
+	                                    <label id="tema9">9</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(255,255,204)" width="15" height="15" y="0"></rect>
+		                                    	<rect fill="rgb(37,52,148)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme10" class = "colors_style">
+	                                    <label id="tema10">10</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(240,249,232)" width="15" height="15" y="0"></rect>
+	                                    		<rect fill="rgb(8,104,172)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme11" class = "colors_style">
+	                                    <label id="tema11">11</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(239,243,255)" width="15" height="15" y="0"></rect>
+				                                <rect fill="rgb(8,81,156)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme12" class = "colors_style">
+	                                    <label id="tema12">12</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(241,238,246)" width="15" height="15" y="0"></rect>
+	                                    		<rect fill="rgb(4,90,141)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme13" class = "colors_style">
+	                                    <label id="tema13">13</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(237,248,251)" width="15" height="15" y="0"></rect>
+		                                    	<rect fill="rgb(129,15,124)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme14" class = "colors_style">
+	                                    <label id="tema14">14</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(254,235,226)" width="15" height="15" y="0"></rect>
+	                                    	<rect fill="rgb(122,1,119)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme15" class = "colors_style">
+	                                    <label id="tema15">15</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(241,238,246)" width="15" height="15" y="0"></rect>
+	                                    		<rect fill="rgb(221,28,119)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+
+	                                <div id="scheme16" class = "colors_style">
+	                                    <label id="tema16">16</label>
+	                                    <div class="temati ramp BuGn selected">
+	                                    	<svg width="15" height="75">
+	                                    		<rect fill="rgb(242,240,247)" width="15" height="15" y="0"></rect>
+				                                <rect fill="rgb(84,39,143)" width="15" height="15" y="15"></rect>
+	                                   		</svg>
+	                                   	</div>
+	                                </div>
+	                        </div>
+
+	                        <div class="dropdown-divider"></div>
+				       		<br>
+				            
+		                    <button type="button" class="btn btn-outline-dark" id="criar_anotacao" value="Criar anotação">Criar anotação</button>
+
+		                    <div id = "modal_activate" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
+			                    <div class="modal-dialog">
+			                     	<div class="modal-content">
+			                      		<div class="modal-header">
+			                      			<h4 class="modal-title">Por favor, preencha os campos:</h4>
+			                   			</div>
+			                   			
+			                   			<div class="modal-body">
+			                   				<div class="bootbox-body">
+			                   					<form class="bootbox-form">
+			                   						<label>Título</label>
+			                   						<input id="title"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+													<label>Contexto</label>
+			                      					<input id="text" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+			                      				</form>
+			                      			</div>
+			                      		</div>
+			                      		
+			                      		<div class="modal-footer">	
+			                      			<button id = "button_cancel" data-bb-handler="cancel" type="button" class="btn btn-default">Cancel</button>
+			                      			<button id = "button_OK" data-bb-handler="confirm" type="button" class="btn btn-primary">OK</button>
+			                      		</div>
+			                      	</div>
+			                    </div>
+		                    </div>
+
+		                    <div id = "modal_activate_position" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
+			                    <div class="modal-dialog">
+			                      	<div class="modal-content">
+			                      		<div class="modal-header">
+			                      			<h4 class="modal-title">Por favor, selecione o local que deseja criar a anotação.</h4>
+			                      		</div>
+			                      		<div class="modal-footer">
+			                      			<button id = "button_cancel_2" data-bb-handler="cancel" type="button" class="btn btn-default">Cancel</button>
+			                      			<button id = "button_OK_2" data-bb-handler="confirm" type="button" class="btn btn-primary">OK</button>
+			                      		</div>
+			                      	</div>
+			                    </div>
+		                    </div>
+		            	</div>
+		            </div>
+				</div>
+
+		        <div id = "update">
+		            <div class="botao-camada my-1">
+		                <button type="button" data-toggle="collapse" id="botaoUpdate" class="btn btn-block btn-outline-main" data-target="#ControleUpdate" aria-expanded="false" aria-controls="ControleUpdate">Atualizar anotações</button>
+		            </div>
+		            <div class="collapse" id="ControleUpdate">
+		            	<div class="card card-body">
+		                    <div class="collapsible-body">
+				                <button id="select_annotation_change" type="button" class="btn one btn-outline-dark">Selecione a anotação</button>
+		                    </div>
+		            	</div>
+		            </div>     
+		        </div>
+		        
+		        <div id = "delete">
+		          	<div class="botao-camada my-1">
+		                <button type="button" data-toggle="collapse" id="botaoDelete" class="btn btn-block btn-outline-main" data-target="#ControleDelete" aria-expanded="false" aria-controls="ControleDelete">Deletar anotações</button>
+		            </div>
+		            <div class="collapse" id="ControleDelete">
+		            	<div class="card card-body">
+		                    <div class="collapsible-body">
+		                        <button id="select_annotation_remove" type="button" class="btn one btn-outline-dark">Selecione a anotação</button>
+		                        <br>
+		                            <!-- TODO: Mostrar a anotação que é pra ser removida e um botão para confirmar a exclusão dessa anotação/ou só um alerta -->
+		                    </div>
+		                </div>
+		            </div> 
+		        </div>
+	    </navbar>
+
+	    <div class= "col-sm-8 col-lg-8">
+	    	<div id="map"> </div>
+	   	</div>
+	</div>
+
+    <script type="text/javascript">
+    	$('.collapse').collapse();
+    	$("#modal_activate").hide();
+    	$("#modal_activate_position").hide();
+
+        //Vetor de anotações
+		var annotations = [];
+		var contador = 0;
+
+        var mapboxTiles = 	L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png', {
+    	        						attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
+    	    				});
+        // Criação do mapa
+  	    var map = L.map('map')
+  	             .addLayer(mapboxTiles)
+  	             .setView([40.72332345541449, -73.99], 14);
+
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; ' + mapLink + ' Contributors',
+                maxZoom: 18,
+                }).addTo(map);
+          
+        // Quando o mapa mover ou dar zoom as anotações serão reposicionadas no seu local de origem de criação
+        map.on("zoom", change);
+        map.on("move", change);
+
+        function change(e){
+            annotations.forEach((d,i) => {
+                var annotation = d.annotations()[0]
+                let newCoord = map.latLngToContainerPoint(annotation.data)
+                annotation._x = newCoord.x - margin.left
+                annotation._y = newCoord.y - margin.top
+                d.update()
+            })
+        };
+
+        // Criação dos elementos gráficos para anotações
+        const h = document.getElementById('map').offsetHeight;
+        const w = document.getElementById('map').offsetWidth;
+        const margin = {left: 20, right: 20, top: 40, bottom: 20};
+        const innerW = w - (margin.left + margin.right);
+        const innerH = h - (margin.top + margin.bottom);
+
+        var svg = d3.select("#map").append("svg")
+  	                .attr("width", w)
+  	                .attr("height", h);
+
+        var g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+        // Propriedades das anotações inputadas pelo user  
+	    function click_text_color(id){
+	       text_color = $(id).val();
+	    }
+
+	    function click_bg_color(id){
+	       bg_color = $(id).val();
+	       console.log(bg_color);
+	    }
+
+	    function click_path_color(id){
+	       path_color = $(id).val();
+	    }
+
+	    $("#button_cancel").click(function(){
+	    	$("#modal_activate").hide();
+	    });
+
+	    $("#button_cancel_2").click(function(){
+	    	$("#modal_activate_position").hide();
+	    })
+
+	    // Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
+	    function change_annotation(id){
+	    	 var annotation_title = $("#titulo_change").val(),
+            	annotation_text = $("#comentario_change").val(),
+           		text_color = $("#text_color_change").val(), 
+				bg_color = $("#bg_color_change").val(), 
+				path_color = $("#path_color_change").val();
+
+				$("#"+id).find("rect").css("fill", bg_color);
+		        $("#"+id).find("tspan").css("fill", text_color);
+		        $("#"+id).find("path").css("stroke", path_color);
+		        $("#"+id).find("path").css("fill", path_color);
+
+		        $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = annotation_title;
+		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = annotation_title;
+	    }
+
+	    // Criação de uma anotação
+        $("#criar_anotacao").click(function(){
+            $("#modal_activate").show();
+            
+            var annotation_title;
+            var annotation_text;
+           	var text_color = "black";
+			var bg_color = "white";
+			var path_color = "blue";
+
+            $("#button_OK").click(function(){
+            	annotation_title = $("#title").val();
+            	annotation_text = $("#text").val();
+    //        		text_color = $("#text_color").val();
+				// bg_color = $("#bg_color").val();
+				// path_color = $("#path_color").val();
+
+				console.log(annotation_title);
+				$("#modal_activate").hide();
+
+				$("#modal_activate_position").show();
+				$("#button_OK_2").click(function(){
+					$("#modal_activate_position").hide();
+					map.on('click', onMapClick);
+          	
+		          	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
+				    var canClick = true
+				    
+				    function onMapClick(e) {
+				        if(canClick){
+				            create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color, path_color);
+				            canClick = false;
+				         }
+			        };
+				});
+	    	});
+
+	    	
+
+			
+        });
+
+        function create_annotation(coordenadas, data, annonation_title, annonation_text, text_color, bg_color, path_color){
+    	    // Criação do Json com as propriedades da anotação inputadas pelo user
+    	    const this_annotation = [{
+    	        note: {
+    	            label: annonation_text,
+    	            title: annonation_title,
+    	            lineType: "vertical",
+    	            wrap: 200,
+    	        },
+    	        connector: {
+    	            end: "arrow"
+    	        },
+                x: coordenadas[0] - margin.left,
+                y: coordenadas[1] - margin.top,
+    	        dx: 40,
+    	        dy: -40,
+                data: data
+    	    }];
+    	   
+
+    	    const makeThis = d3.annotation()
+			    	            .type(d3.annotationLabel)
+			    	            .annotations(this_annotation)
+			    	            .editMode(true);
+
+			// Adição da nova anotação no vetor de anotações
+            annotations.push(makeThis); 
+
+            // Agregando a anotação aos elementos gráficos 
+      		var gg = g.append("g")
+      		        	.attr("class", "leaflet-zoom-hide")
+                  		.attr("id", `${contador}`)
+	      		        .attr("transform","translate("+margin.left+","+margin.top+")")
+	      		        .attr("class","annotation-group")
+	      		        .call(makeThis)
+
+            // Modificações das cores
+            $("#"+contador).find("rect").css("fill", bg_color);
+            $("#"+contador).find("tspan").css("fill", text_color);
+            $("#"+contador).find("path").css("stroke", path_color);
+            $("#"+contador).find("path").css("fill", "none");
+
+            type = null,
+            type_line = null,
+            type_align = null,
+            type_connector = null,
+            type_connector_end = null;
+           	contador = contador + 1;
+    	}
+
+    	$("#select_annotation_change").click(function(){
+	    	$(".annotation-group").on("click", function(){
+	    		change_annotation($(this)[0].id);
+	    	});
+	    });
+
+	    $("#select_annotation_remove").click(function(){
+	    	$(".annotation-group").on("click", function(){
+	    		var id = $(this)[0].id;
+	    		$("#"+id).hide();
+	    	});
+	    });
+    </script>
+</body>
+</html>

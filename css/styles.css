@@ -1,0 +1,126 @@
+/* ############ D3-ANNOTATION ############*/
+svg {
+    position: relative;
+    
+}
+
+path {
+    fill: none;
+    stroke-width: 2px;
+    stroke: white;
+    stroke-opacity: 1;
+}
+           
+text { 
+	font-family: metric;
+}
+                
+.title {             
+	font-weight:500;
+}
+                
+:root {
+	--annotation-color: white;
+	--accent-color: #E8336D;
+}
+            
+.annotation path {
+	stroke: var(--annotation-color);
+	fill: none;
+}
+
+.annotation path.connector-arrow, 
+.annotation path.connector-dot, 
+.annotation-note-label text,
+.title text, .annotation text {
+	fill: black;
+	font-size:1.4em;
+	margin-left: 5px;
+	text-align: justify;
+	margin: 10px;
+	padding: 10px;
+}
+
+.annotation-note-bg {
+	fill: white;
+	opacity: 0.8;
+	border-radius: 90px;
+	width: 200px;
+	height: 90px;
+}
+
+rect {
+	border-radius: 100px;
+}
+
+.annotation-note-title, text.title {
+	font-weight: bold;
+}
+
+/*hide the handles*/
+circle.handle {
+	stroke: none;
+	cursor: move;
+	fill-opacity: 0;
+}
+
+circle.handle.highlight {
+	stroke-opacity: 1;
+}
+
+
+/* ############ PÁGINA ############*/
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: 'Lato';
+}
+
+img {
+	width: 4%;
+	margin-right: 15% 
+}
+
+.type_annotation {
+	width: 15%;
+	height: 15%;
+	margin-right: 15% 
+}            
+
+.options_annotations {
+	margin-right: 10% 
+}
+
+#panel {
+    height: 20%;
+	width: 80%;
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+.colors {
+    margin-left: 10%;
+}
+
+.colors_style {
+	margin-left: 5%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.grayscale { 
+	filter: grayscale(100%); 
+}
+
+b, h5 {
+	text-align: center;
+}
+
+.one {
+	margin-left: 12%;
+}

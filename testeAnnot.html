@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>d3v4 and d3-annotation</title>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/1.13.0/d3-annotation.min.js"></script>
+		<style>
+			body{font-family:metric;}
+			.background{fill:#fff1e0;}
+			.anno-capture{fill-opacity:0;}
+			text{font-family:metric;}
+			.title{font-size:1.4em;font-weight:500;}
+			.rect{fill:white;}
+
+			:root {
+      			--annotation-color: white;
+    		}
+    		.annotation path {
+		      stroke: var(--annotation-color);
+		      fill: none;
+		    }
+
+		    .annotation path.connector-arrow, 
+		    .annotation path.connector-dot, 
+		    .title text, .annotation text {
+		      fill: blue;
+		    }
+
+		    .annotation-note-bg {
+		      fill: white;
+		    }
+
+		    .annotation-note-title, text.title {
+		      font-weight: bold;
+		    }
+
+		    text.title {
+		      font-size: 1.2em;
+		    }
+
+		    .annoHTML{background-color: white ;color:blue;width:70%;}
+      
+		      /*hide the handles*/
+		      circle.handle {
+		        stroke: none;
+		        cursor: move;
+		        fill-opacity: 0;
+		      }
+
+		      circle.handle.highlight {
+		        stroke-opacity: 1;
+		      }
+
+		</style>
+	</head>
+	<body>
+		<script>
+
+		const mytitle = "d3v4 and d3-annotation";
+		//basic chart layout
+		const h = 1000;
+		const w = 1000;
+		const margin = {left:20,right:20,top:40,bottom:20}
+
+		let option = "circle";
+	    let annoTitle = "Look here!"
+	   	let annoText = "Something important happened here - and these are the details..."
+
+		var annoNumber = 0;
+
+
+		const innerW = w-(margin.left+margin.right);
+		const innerH = h-(margin.top+margin.bottom);
+
+		let svg = d3.select("body").append("svg")
+			.attr("width",w)
+			.attr("height",h)
+
+		svg.append("rect")
+			.attr("width",innerW)
+			.attr("height",innerH)
+			.attr("x",margin.left)
+			.attr("y",margin.top)
+
+		svg.append("rect")
+			.attr("class","anno-capture")
+			.attr("width",innerW)
+			.attr("height",innerH)
+			.attr("x",margin.left)
+			.attr("y",margin.top)
+			.on("click",function(){
+				var coordinates=[0,0];
+				coordinates=d3.mouse(this);
+				createAnno(coordinates)
+			})
+
+
+	function createAnno(coords){
+		var type;
+		var annoConnector;
+
+		// if (option=="circle"){
+			type=d3.annotationCallout;
+		// }
+
+		// if (option=="arrow"||option=="dot"){
+		// 	type=d3.annotationLabel;
+		// }
+
+		// if (option=="arrow"){
+		// 	annoConnector="arrow"
+		// }
+
+		// if (option=="dot"){
+		// 	annoConnector="dot"
+		// }
+
+		const thisAnno = [{
+		note: {
+					label:annoText,
+					title:annoTitle,
+					wrap:150,
+					align:"middle",
+				},
+				connector:{
+					end:annoConnector
+				},
+				x:coords[0]-margin.left,
+				y:coords[1]-margin.top,
+				dx:30,
+				dy:-30
+			}];
+
+		const makeThis = d3.annotation()
+			.type(type)
+			.annotations(thisAnno)
+			.editMode(true)
+
+		svg.append("g")
+			.attr("transform","translate("+margin.left+","+margin.top+")")
+			.attr("class","annotation-group")
+			.call(makeThis)
+
+	}//end function
+
+		</script>
+	<body>
+</html>
