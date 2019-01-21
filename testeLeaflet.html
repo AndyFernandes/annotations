@@ -31,6 +31,7 @@
     <div class = "row container-fluid no-padding my-1 h-100">
 	    <navbar class = "col-sm-4 col-lg-4 no-padding" id="controleMapa">
 		        <div id = "create">
+
 		            <div class="botao-camada my-1">
 		                <button type="button" data-toggle="collapse" id="botaoCreate" class="btn btn-block btn-outline-main" data-target="#ControleCreate" aria-expanded="false" aria-controls="ControleCreate">Criar anotações</button>
 		            </div>
@@ -361,24 +362,28 @@
         var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
         ///////////////////////////////////////////////////////// FUNCTIONS JS
-        // Propriedades das anotações inputadas pelo user  
-	    // function click_text_color(id){
-	    //    text_color = $(id).val();
-	    // }
-
-	    // function click_bg_color(id){
-	    //    bg_color = $(id).val();
-	    //    console.log(bg_color);
-	    // }
-
-	    // function click_path_color(id){
-	    //    path_color = $(id).val();
-	    // }
-
+        var text_color = "black";
+		var bg_color = "white";
+		var path_color = "blue";
 	    /////////////////////// LISTENING
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
+
+	    $(".colors_style").click(function(){
+	    	console.log(this);
+	    	bg_color = $(this).find("rect")[0].getAttribute("fill"); 
+	    	path_color = $(this).find("rect")[1].getAttribute("fill"); 
+	    	text_color = path_color;
+	    	console.log(bg_color);
+	    	console.log(path_color);
+
+	    	$(".colors_style").css("border", "none");
+	    	$(this).css("border", "2px solid");
+	    	$(this).css("border-color", "rgb(8,81,156)");
+	    	$(this).css("border-radius", "30px");
+	    	// $(this).css("height", "80px");
+	    });
 	    
 	    ////////////////////// CREATE
         $("#criar_anotacao").click(function(){
@@ -386,83 +391,84 @@
             
             var annotation_title;
             var annotation_text;
-           	var text_color = "black";
-			var bg_color = "white";
-			var path_color = "blue";
-
+           	
+            var canClick = true
             $("#button_OK").click(function(){
-            	annotation_title = $("#title").val();
-            	annotation_text = $("#text").val();
-    			//text_color = $("#text_color").val();
-				// bg_color = $("#bg_color").val();
-				// path_color = $("#path_color").val();
+            	if (canClick){
+	            	annotation_title = $("#title").val();
+	            	annotation_text = $("#text").val();
 
-				$("#modal_activate").hide();
-				$("#modal_activate_position").show();
+					$("#modal_activate").hide();
+					$("#modal_activate_position").show();
 
-				$("#button_OK_2").click(function(){
-					$("#modal_activate_position").hide();
-					map.on('click', onMapClick);
-		          	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
-				    var canClick = true
-				    function onMapClick(e) {
-				        if(canClick){
-				            create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color, path_color);
-				            canClick = false;
-				         }
-			        };
-				});
+					$("#button_OK_2").click(function(){
+						$("#modal_activate_position").hide();
+						map.on('click', onMapClick);
+			          	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
+					    
+					    function onMapClick(e) {
+					        if(canClick){
+					        	canClick = false;
+					        	coordenadas = [e.containerPoint.x,e.containerPoint.y];
+					        	data = e.latlng;
+					     		create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color, path_color);
+					            
+							}
+				        };
+					});
+				}
 	    	});
         });
 
-        function create_annotation(coordenadas, data, annonation_title, annonation_text, text_color, bg_color, path_color){
-    	    // Criação do Json com as propriedades da anotação inputadas pelo user
-    	    const this_annotation = [{
-    	        note: {
-    	            label: annonation_text,
-    	            title: annonation_title,
-    	            lineType: "vertical",
-    	            wrap: 200,
-    	        },
-    	        connector: {
-    	            end: "arrow"
-    	        },
-                x: coordenadas[0] - margin.left,
-                y: coordenadas[1] - margin.top,
-    	        dx: 40,
-    	        dy: -40,
-                data: data
-    	    }];
-    	   
+        function create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color, path_color){
+    	//     // Criação do Json com as propriedades da anotação inputadas pelo user
+    			const this_annotation = [{
+					    	        note: {
+					    	            label: annotation_text,
+					    	            title: annotation_title,
+					    	            lineType: "vertical",
+					    	            wrap: 200,
+					    	        },
+					    	        connector: {
+					    	            end: "arrow"
+					    	        },
+					                x: coordenadas[0] - margin.left,
+					                y: coordenadas[1] - margin.top,
+					    	        dx: 40,
+					    	        dy: -40,
+					                data: data
+					    	    }];
+					    	   
 
-    	    const makeThis = d3.annotation()
-			    	            .type(d3.annotationLabel)
-			    	            .annotations(this_annotation)
-			    	            .editMode(true);
+					    	    const makeThis = d3.annotation()
+								    	            .type(d3.annotationLabel)
+								    	            .annotations(this_annotation)
+								    	            .editMode(true);
 
-			// Adição da nova anotação no vetor de anotações
-            annotations.push(makeThis); 
+								// Adição da nova anotação no vetor de anotações
+					            annotations.push(makeThis); 
 
-            // Agregando a anotação aos elementos gráficos 
-      		var gg = g.append("g")
-      		        	.attr("class", "leaflet-zoom-hide")
-                  		.attr("id", `${contador}`)
-	      		        .attr("transform","translate("+margin.left+","+margin.top+")")
-	      		        .attr("class","annotation-group")
-	      		        .call(makeThis)
+					            // Agregando a anotação aos elementos gráficos 
+					      		var gg = g.append("g")
+					      		        	.attr("class", "leaflet-zoom-hide")
+					                  		.attr("id", `${contador}`)
+						      		        .attr("transform","translate("+margin.left+","+margin.top+")")
+						      		        .attr("class","annotation-group")
+						      		        .call(makeThis)
 
-            // Modificações das cores
-            $("#"+contador).find("rect").css("fill", bg_color);
-            $("#"+contador).find("tspan").css("fill", text_color);
-            $("#"+contador).find("path").css("stroke", path_color);
-            $("#"+contador).find("path").css("fill", "none");
+					            // Modificações das cores
+					            $("#"+contador).find("rect").css("fill", bg_color);
+					            $("#"+contador).find("tspan").css("fill", text_color);
+					            $("#"+contador).find("path").css("stroke", path_color);
+					            $("#"+contador).find("path").css("fill", "none");
 
-            type = null,
-            type_line = null,
-            type_align = null,
-            type_connector = null,
-            type_connector_end = null;
-           	contador = contador + 1;
+					            type = null,
+					            type_line = null,
+					            type_align = null,
+					            type_connector = null,
+					            type_connector_end = null;
+					           	contador = contador + 1;
+    	    
     	}
 
     	var canClick;
