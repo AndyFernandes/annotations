@@ -9,6 +9,9 @@
    	<!-- JAVASCRIPT -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/spectrum.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+
     <!-- IMPORTAÇÕES D3ANNOTATIONS & DEMAIS LIBS D3 -->
     <script src="https://d3js.org/d3-geo.v1.min.js"></script>
     <script src="http://d3js.org/d3.v4.min.js" type="text/javascript"></script>
@@ -42,9 +45,10 @@
 	                        <div id="type" class="section">
 	                                <div class="learn-more" id="schemes-learn-more" title="Learn more"></div>
 	                                <p><b>Selecione o tema de cores:</b></p>
-	                                <p>1: Background</p>
-	                                <p>2: Texto </p>
+	                                <!-- <p>1: Background</p>
+	                                <p>2: Texto </p> -->	                       
 	                        </div>
+							
 							<div id="scheme" class="row">
 	                            	<div id="scheme1" class = "colors_style">
 	                                    <label id="tema1">1</label>
@@ -197,6 +201,14 @@
 	                                </div>
 	                        </div>
 
+	                       <!--  <div class="clearfix"></div>
+	                        <div class="flex-container" style="display: flex">
+	                            <div style="width: 70px">
+	                                <p>Color:</p>
+	                                <input type='text' id="label_color" value="#0b5394"/>
+                            	</div>
+                            </div> -->
+
 	                        <div class="dropdown-divider"></div>
 				       		<br>
 				            
@@ -252,7 +264,7 @@
 		            <div class="collapse" id="ControleUpdate">
 		            	<div class="card card-body">
 		                    <div class="collapsible-body">
-				                <button id="select_annotation_change" type="button" class="btn one btn-outline-dark">Selecione a anotação</button>
+				                <button id="select_annotation_change" type="button" class="btn btn-outline-dark">Selecione a anotação</button>
 
 			                    <div id = "modal_change" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
 				                    <div class="modal-dialog">
@@ -291,7 +303,8 @@
 		            <div class="collapse" id="ControleDelete">
 		            	<div class="card card-body">
 		                    <div class="collapsible-body">
-		                        <button id="select_annotation_remove" type="button" class="btn one btn-outline-dark">Selecione a anotação</button>
+		                    	<!-- <button type="button" class="btn btn-outline-dark" id="criar_anotacao" value="Criar anotação">Criar anotação</button> -->
+		                        <button id="select_annotation_remove" type="button" class="btn btn-outline-dark" value="Selecionar a anotação">Selecione a anotação</button>
 		                        <br>
 		                            <!-- TODO: Mostrar a anotação que é pra ser removida e um botão para confirmar a exclusão dessa anotação/ou só um alerta -->
 		                    </div>
@@ -371,12 +384,9 @@
 	    })
 
 	    $(".colors_style").click(function(){
-	    	console.log(this);
 	    	bg_color = $(this).find("rect")[0].getAttribute("fill"); 
 	    	path_color = $(this).find("rect")[1].getAttribute("fill"); 
 	    	text_color = path_color;
-	    	console.log(bg_color);
-	    	console.log(path_color);
 
 	    	$(".colors_style").css("border", "none");
 	    	$(this).css("border", "2px solid");
@@ -384,7 +394,29 @@
 	    	$(this).css("border-radius", "30px");
 	    	// $(this).css("height", "80px");
 	    });
-	    
+
+		// $("#label_color").spectrum({
+	 //                                        showPalette: true,
+	 //                                        showInitial: true,
+	 //                                        showInput: true,
+	 //                                        preferredFormat: "hex",
+	 //                                        color: '#0b5394',
+	 //                                        palette: [
+	 //                                            ["#000",    "#444",    "#666",    "#999",    "#ccc",    "#eee",    "#f3f3f3", "#fff",    "#fff7fb", "#fff7ec"],
+	 //                                            ["#f00",    "#f90",    "#ff0",    "#0f0",    "#0ff",    "#00f",    "#90f",    "#f0f",    "#ece7f2", "#fee8c8"],
+	 //                                            ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc", "#d0d1e6", "#fdd49e"],
+	 //                                            ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd", "#a6bddb", "#fdbb84"],
+	 //                                            ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0", "#74a9cf", "#fc8d59"],
+	 //                                            ["#c00",    "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79", "#3690c0", "#ef6548"],
+	 //                                            ["#900",    "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47", "#0570b0", "#b30000"],
+	 //                                            ["#600",    "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130", "#045a8d", "#7f0000"]
+	 //                                        ],
+	 //                                        // change: function (color) {
+	 //                                        //     color.toHexString(); // #ff0000
+	 //                                        //     // Caso o usuário troque a cor no colorpicker ele atualiza no mapa
+	 //                                        //     TrocaCorLabelsFeatures(document.getElementById('label_color').value);
+	 //                                        // }
+	 //    });	    
 	    ////////////////////// CREATE
         $("#criar_anotacao").click(function(){
             $("#modal_activate").show();
@@ -492,20 +524,22 @@
     		});
 	    }
 
+
+
     	$("#select_annotation_change").click(function(){
-    		canClick = true;
-    		if(canClick){
-    			$(".annotation-group").on("click", function(){
-	    			change_annotation($(this)[0].id);
-	    		});
-    		}
+    		$(".annotation-group").off("click");
+    		$(".annotation-group").on("click", function(){
+	    		change_annotation($(this)[0].id);
+	    	});
 	    });
 
-	    $("#select_annotation_remove").click(function(){
-	    	$(".annotation-group").on("click", function(){
-	    		var id = $(this)[0].id;
-	    		$("#"+id).hide();
+    	
+	    $("#select_annotation_remove").on("click", function(event2){
+			$(".annotation-group").off("click");
+			$(".annotation-group").on("click", function(event){
+		    	$("#"+ $(this)[0].id).hide();
 	    	});
+	    	
 	    });
     </script>
 </body>
