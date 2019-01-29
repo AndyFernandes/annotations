@@ -1,13 +1,12 @@
 /* ############ D3-ANNOTATION ############*/
 svg {
-    position: relative;
-    
+    position: relative;  
 }
 
 path {
     fill: none;
     stroke-width: 2px;
-    stroke: white;
+    stroke: black;
     stroke-opacity: 1;
 }
            
@@ -20,7 +19,7 @@ text {
 }
                 
 :root {
-	--annotation-color: white;
+	--annotation-color: black;
 	--accent-color: #E8336D;
 }
             
@@ -37,16 +36,18 @@ text {
 	font-size:1.4em;
 	margin-left: 5px;
 	text-align: justify;
-	margin: 10px;
-	padding: 10px;
+	margin-left: 10px;
+	padding-left: 10px;
 }
 
 .annotation-note-bg {
 	fill: white;
-	opacity: 0.8;
+	opacity: 0.7;
 	border-radius: 90px;
-	width: 200px;
-	height: 90px;
+	padding-left: 10px;
+	margin-left: 25px;
+	/*width: 200px;
+	height: 90px;*/
 }
 
 rect {
@@ -58,15 +59,22 @@ rect {
 }
 
 /*hide the handles*/
-circle.handle {
-	stroke: none;
+.handle-2 {
+	stroke: black;
+	stroke-width: 3;
+	stroke-dasharray: 3;
 	cursor: move;
-	fill-opacity: 0;
+	fill: none;
+
 }
 
-circle.handle.highlight {
-	stroke-opacity: 1;
+.handle {
+	fill-opacity: 0;
+	cursor: none;
 }
+/*circle.handle.highlight {
+	stroke-opacity: 1;
+}*/
 
 
 /* ############ PÁGINA ############*/
@@ -104,14 +112,7 @@ img {
 }
 
 .colors {
-    margin-left: 10%;
-}
-
-.colors_style {
-	margin-left: 10%;
-	height: 80px;
-	width: 40px;
-	padding: 10px;
+    margin-left: 5%;
 }
 
 
