@@ -41,7 +41,6 @@
     <div class = "row container-fluid no-padding my-1 h-100">
 	    <navbar class = "col-sm-4 col-lg-4 no-padding" id="controleMapa">
 		        <div id = "create">
-
 		            <div class="botao-camada my-1">
 		                <button type="button" data-toggle="collapse" id="botaoCreate" class="btn btn-block btn-outline-main" data-target="#ControleCreate" aria-expanded="false" aria-controls="ControleCreate">Criar anotações</button>
 		            </div>
@@ -80,11 +79,11 @@
 			                   			
 			                   			<div class="modal-body">
 			                   				<div class="bootbox-body">
-			                   					<form class="bootbox-form">
+			                   					<form class="bootbox-form" id="form">
 			                   						<label>Título</label>
 			                   						<input id="title"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
 													<label>Contexto</label>
-			                      					<input id="text" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+			                      					<textarea id="text" form="form" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text"></textarea>
 			                      				</form>
 			                      			</div>
 			                      		</div>
@@ -120,7 +119,7 @@
 		            </div>
 		            <div class="collapse" id="ControleUpdate">
 		            	<div class="card card-body">
-		                    <div class="collapsible-body">
+		                    
 				                <button id="select_annotation_change" type="button" class="btn btn-outline-dark">Selecione a anotação</button>
 
 			                    <div id = "modal_change" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
@@ -136,7 +135,7 @@
 				                   						<label>Título</label>
 				                   						<input id="title_change"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
 														<label>Contexto</label>
-				                      					<input id="text_change" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+				                      					<textarea id="text_change" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text"></textarea>
 				                      				</form>
 				                      			</div>
 				                      		</div>
@@ -147,7 +146,7 @@
 				                      		</div>
 				                      	</div>
 				                    </div>
-			                    </div>
+			                   
 		                    </div>
 		            	</div>
 		            </div>     
@@ -159,12 +158,9 @@
 		            </div>
 		            <div class="collapse" id="ControleDelete">
 		            	<div class="card card-body">
-		                    <div class="collapsible-body">
-		                    	<!-- <button type="button" class="btn btn-outline-dark" id="criar_anotacao" value="Criar anotação">Criar anotação</button> -->
+		                    
 		                        <button id="select_annotation_remove" type="button" class="btn btn-outline-dark" value="Selecionar a anotação">Selecione a anotação</button>
 		                        <br>
-		                            <!-- TODO: Mostrar a anotação que é pra ser removida e um botão para confirmar a exclusão dessa anotação/ou só um alerta -->
-		                    </div>
 		                </div>
 		            </div> 
 		        </div>
@@ -187,7 +183,7 @@
 			showInitial: true,
 			showInput: true,
 			preferredFormat: "hex",
-			color: '#0b5394',
+			color: 'white',
 			palette: [
 						["#000",    "#444",    "#666",    "#999",    "#ccc",    "#eee",    "#f3f3f3", "#fff",    "#fff7fb", "#fff7ec"],
 						["#f00",    "#f90",    "#ff0",    "#0f0",    "#0ff",    "#00f",    "#90f",    "#f0f",    "#ece7f2", "#fee8c8"],
@@ -205,7 +201,7 @@
 			showInitial: true,
 			showInput: true,
 			preferredFormat: "hex",
-			color: '#0b5394',
+			color: 'black',
 			palette: [
 						["#000",    "#444",    "#666",    "#999",    "#ccc",    "#eee",    "#f3f3f3", "#fff",    "#fff7fb", "#fff7ec"],
 						["#f00",    "#f90",    "#ff0",    "#0f0",    "#0ff",    "#00f",    "#90f",    "#f0f",    "#ece7f2", "#fee8c8"],
@@ -323,7 +319,7 @@
 							    	            title: annotation_title,
 							    	            lineType: "vertical",
 							    	            padding: 10,
-							    	            wrap: 5,
+							    	            wrap: 800,
 							    	        },
 							    	        connector: {
 							    	            end: "arrow"
@@ -357,10 +353,17 @@
 				$("#"+contador).find(".annotation-note").find("circle").attr("class", "handle-2");
 				$("#"+contador).find("rect").attr("rx", "10");
 				$("#"+contador).find("rect").attr("ry", "10");
-				$("#"+contador).find("text").attr("dx", "10");
-				$("#"+contador).find(".annotation-note-title").attr("y", "10");
-				$("#"+contador).find(".annotation-note-label").attr("y", "30");
+				$("#"+contador).find("tspan").attr("x", "15");
 
+				var qnt = $("#"+contador).find(".annotation-note-title").find("tspan").length;
+				$("#"+contador).find(".annotation-note-title").attr("y", "10");
+				// ATENÇÃO: OS VALORES ABAIXO FORAM OS QUE EU TESTEI BRAÇAL PRA DEIXAR BONITINHO
+				$("#"+contador).find(".annotation-note-label").attr("y", 10+qnt*25);
+
+				// $("#"+contador).find("tspan").hide();
+				// $("#"+contador).find("tspan").remove();
+				// $("#"+contador).find(".annotation-note-title")[0].innerHTML = annotation_title;
+				// $("#"+contador).find(".annotation-note-label")[0].innerHTML = annotation_text;
 
 				// Modificações das cores
 				$("#"+contador).find("rect").css("fill", bg_color);
@@ -369,15 +372,27 @@
 				$("#"+contador).find("path").css("fill", "none");
 				$("#"+contador).find(".handle-2").css("stroke", path_color);
 
-				
-
 				var width = +$("#"+contador).find("rect").width();
 				var height = +$("#"+contador).find("rect").height();
 
-				$("#"+contador).find("rect").attr("width", width+50);
+				// var tam = Math.trunc(annotation_text.length/120) + Math.trunc(annotation_title/120) +1;
+				// console.log(tam);
+				// if(annotation_text.length > annotation_title.length){
+				// 	tam = annotation_text.length;
+				// } else {
+				// 	tam = annotation_title.length;
+				// }
+
+				// $("#"+contador).find()
+				// $("#"+contador).find("rect").attr("width", (tam*7.5) + width);
+				$("#"+contador).find("rect").attr("width", 50+width);
 				$("#"+contador).find("rect").attr("height", height+30);
 
-				contador = contador + 1;    	    
+				contador = contador + 1;
+
+				$("#text").val('');
+				$("#title").val('');
+
     	}
 
     	// Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
@@ -393,7 +408,7 @@
 
     		$("#button_OK_change").click(function(){
     			$("#modal_change").hide();
-
+    			$("#"+id).find("tspan").remove();
     			$("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = $("#title_change").val();
 		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = $("#text_change").val();
     		});
