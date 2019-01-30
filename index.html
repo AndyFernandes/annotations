@@ -83,7 +83,8 @@
 			                   						<label>Título</label>
 			                   						<input id="title"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
 													<label>Contexto</label>
-			                      					<textarea id="text" form="form" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text"></textarea>
+			                      					<textarea id="text" form="form" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onKeyUp="return  Contador('text',250);"></textarea>
+			                      					<input name="contador" type="text" disabled="disabled" class="caixa2" id="contador" size="7" maxlength="7">
 			                      				</form>
 			                      			</div>
 			                      		</div>
@@ -226,7 +227,7 @@
         // Criação do mapa
   	    var map = L.map('map')
   	             .addLayer(mapboxTiles)
-  	             .setView([40.72332345541449, -73.99], 14);
+  	             .setView([-3.786493992586659, -38.56006443500519], 12);
 
         mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         
@@ -270,6 +271,17 @@
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
+
+	    function Contador(field, MaxLength) { 	  
+	    	obj = document.all(field); 	  
+	    	if (MaxLength !=0) { 		 
+	    		if (obj.value.length > MaxLength)  {			
+	    			obj.value = obj.value.substring(0, MaxLength); 			
+	    		}	  
+	    	} 	  
+	    	console.log(obj);
+	    	$("#contador").val() = obj.value.length + '/300';   
+	    }
 		    
 	    
 	    ////////////////////// CREATE
@@ -319,7 +331,7 @@
 							    	            title: annotation_title,
 							    	            lineType: "vertical",
 							    	            padding: 10,
-							    	            wrap: 800,
+							    	            wrap: 1000,
 							    	        },
 							    	        connector: {
 							    	            end: "arrow"
@@ -340,7 +352,6 @@
 
 				// Adição da nova anotação no vetor de anotações
 				annotations.push(makeThis); 
-
 				// Agregando a anotação aos elementos gráficos 
 				var gg = g.append("g")
 							.attr("class", "leaflet-zoom-hide")
@@ -408,7 +419,19 @@
 
     		$("#button_OK_change").click(function(){
     			$("#modal_change").hide();
-    			$("#"+id).find("tspan").remove();
+    			
+    			var width = +$("#"+contador).find("rect").width();
+
+    			var tam = 0;
+				
+				if($("#title_change").val().length > $("#text_change").val().length){
+					tam = $("#title_change").val().length;
+				} else {
+					tam = $("#text_change").val().length;
+				}
+
+    			$("#"+id).find("rect").attr("width", (tam * 9) + 40);
+    			// $()
     			$("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = $("#title_change").val();
 		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = $("#text_change").val();
     		});
