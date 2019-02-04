@@ -24,9 +24,9 @@
 	<!-- IMPORTAÇÕES D3ANNOTATIONS & DEMAIS LIBS D3 -->
 	<script src="https://d3js.org/d3-geo.v1.min.js"></script>
 	<script src="http://d3js.org/d3.v4.min.js" type="text/javascript"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/1.13.0/d3-annotation.min.js"></script>
+	<script src="js/d3-annotation.min.js"></script>
 		    
-		    <!-- BOOTSTRAP -->
+	<!-- BOOTSTRAP -->
 		    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		    
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -81,11 +81,18 @@
 			                   				<div class="bootbox-body">
 			                   					<form class="bootbox-form" id="form">
 			                   						<label>Título</label>
-			                   						<input id="title"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+			                   						<input id="title"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text"  onkeyup="count_caracter(this, 'cont_title_create')">
+			                   						<span class="text-muted pull-right" id="cont_title_create">0</span>
+			                   						<br><br>
 													<label>Contexto</label>
-			                      					<textarea id="text" form="form" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onKeyUp="return  Contador('text',250);"></textarea>
-			                      					<input name="contador" type="text" disabled="disabled" class="caixa2" id="contador" size="7" maxlength="7">
+			                      					<textarea id="text" form="form" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onkeyup="count_caracter(this, 'cont_text_create')"></textarea>
+			                      					<span class="text-muted pull-right" id="cont_text_create">0</span>
 			                      				</form>
+
+			                      				<div class="dropdown-divider"></div>
+				       							<br>
+
+				       							<h4 class="modal-title">Por favor, em seguida selecione o local que deseja criar a anotação.</h4>
 			                      			</div>
 			                      		</div>
 			                      		
@@ -97,11 +104,11 @@
 			                    </div>
 		                    </div>
 
-		                    <div id = "modal_activate_position" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
+		                    <!-- <div id = "modal_activate_position" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
 			                    <div class="modal-dialog">
 			                      	<div class="modal-content">
 			                      		<div class="modal-header">
-			                      			<h4 class="modal-title">Por favor, selecione o local que deseja criar a anotação.</h4>
+			                      			
 			                      		</div>
 			                      		<div class="modal-footer">
 			                      			<button data-bb-handler="cancel" type="button" class="btn btn-default btn_cancel">Cancel</button>
@@ -109,7 +116,7 @@
 			                      		</div>
 			                      	</div>
 			                    </div>
-		                    </div>
+		                    </div> -->
 		            	</div>
 		            </div>
 				</div>
@@ -134,9 +141,12 @@
 				                   				<div class="bootbox-body">
 				                   					<form class="bootbox-form">
 				                   						<label>Título</label>
-				                   						<input id="title_change"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text">
+				                   						<input id="title_change"  class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onkeyup="count_caracter(this, 'cont_title_change')">
+				                   						<span class="text-muted pull-right" id="cont_title_change">0</span>
+				                   						<br><br>
 														<label>Contexto</label>
-				                      					<textarea id="text_change" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text"></textarea>
+				                      					<textarea id="text_change" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onkeyup="count_caracter(this, 'cont_text_change')"></textarea>
+				                      					<span class="text-muted pull-right" id="cont_text_change">0</span>
 				                      				</form>
 				                      			</div>
 				                      		</div>
@@ -176,7 +186,7 @@
     	/////////////////////////////// START
     	$('.collapse').collapse();
     	$("#modal_activate").hide();
-    	$("#modal_activate_position").hide();
+    	// $("#modal_activate_position").hide();
     	$("#modal_change").hide();
 
     	$("#bg_color ").spectrum({
@@ -266,23 +276,25 @@
 
         
         ///////////////////////////////////////////////////////// FUNCTIONS JS
-        
-	    /////////////////////// LISTENING
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
 
-	    function Contador(field, MaxLength) { 	  
+	    function count_up(element) { 	  
 	    	obj = document.all(field); 	  
 	    	if (MaxLength !=0) { 		 
 	    		if (obj.value.length > MaxLength)  {			
 	    			obj.value = obj.value.substring(0, MaxLength); 			
 	    		}	  
 	    	} 	  
-	    	console.log(obj);
+	    	// console.log(obj);
 	    	$("#contador").val() = obj.value.length + '/300';   
 	    }
-		    
+
+	    function count_caracter(element, id){
+	    	document.getElementById(id).innerHTML = element.value.length;
+	    }
+
 	    
 	    ////////////////////// CREATE
         $("#criar_anotacao").click(function(){
@@ -302,26 +314,18 @@
 	            	annotation_text = $("#text").val();
 
 					$("#modal_activate").hide();
-					$("#modal_activate_position").show();
-
-					$("#button_OK_2").click(function(){
-						$("#modal_activate_position").hide();
-						
-						map.on('click', onMapClick);
-			          	
-					    function onMapClick(e) {
-					        if(canClick){
-					        	canClick = false;
-					        	coordenadas = [e.containerPoint.x,e.containerPoint.y];
-					        	data = e.latlng;
-					     		create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color, path_color);
-					            
-							}
-				        };
-					});
+					map.on('click', onMapClick);
+			        
+					function onMapClick(e) {
+					    if(canClick){
+					        canClick = false;
+					     	create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color, path_color);
+						}
+				    };
 				}
 	    	});
         });
+
 
         function create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color, path_color){
     		    // Criação do Json com as propriedades da anotação inputadas pelo user
@@ -331,7 +335,10 @@
 							    	            title: annotation_title,
 							    	            lineType: "vertical",
 							    	            padding: 10,
-							    	            wrap: 1000,
+							    	            wrap: 600,
+							    	            bgPadding: 30,
+							    	            right: 20
+
 							    	        },
 							    	        connector: {
 							    	            end: "arrow"
@@ -352,6 +359,7 @@
 
 				// Adição da nova anotação no vetor de anotações
 				annotations.push(makeThis); 
+				
 				// Agregando a anotação aos elementos gráficos 
 				var gg = g.append("g")
 							.attr("class", "leaflet-zoom-hide")
@@ -360,42 +368,27 @@
 						    .attr("class","annotation-group")
 						    .call(makeThis)
 
+				
 				// ajustes de margen + arredondamento do rect(background)
-				$("#"+contador).find(".annotation-note").find("circle").attr("class", "handle-2");
-				$("#"+contador).find("rect").attr("rx", "10");
-				$("#"+contador).find("rect").attr("ry", "10");
-				$("#"+contador).find("tspan").attr("x", "15");
+				$("#"+contador).find(".annotation-note").find("circle").attr("class", "handle-2"); //background
+				$("#"+contador).find("rect").attr("rx", "10"); //background
+				$("#"+contador).find("rect").attr("ry", "10"); //background
+				$("#"+contador).find("tspan").attr("x", "15"); // margin-left tspan - elementos do text
 
-				var qnt = $("#"+contador).find(".annotation-note-title").find("tspan").length;
-				$("#"+contador).find(".annotation-note-title").attr("y", "10");
-				// ATENÇÃO: OS VALORES ABAIXO FORAM OS QUE EU TESTEI BRAÇAL PRA DEIXAR BONITINHO
-				$("#"+contador).find(".annotation-note-label").attr("y", 10+qnt*25);
-
-				// $("#"+contador).find("tspan").hide();
-				// $("#"+contador).find("tspan").remove();
-				// $("#"+contador).find(".annotation-note-title")[0].innerHTML = annotation_title;
-				// $("#"+contador).find(".annotation-note-label")[0].innerHTML = annotation_text;
 
 				// Modificações das cores
-				$("#"+contador).find("rect").css("fill", bg_color);
-				$("#"+contador).find("tspan").css("fill", text_color);
-				$("#"+contador).find("path").css("stroke", path_color);
-				$("#"+contador).find("path").css("fill", "none");
-				$("#"+contador).find(".handle-2").css("stroke", path_color);
+				$("#"+contador).find("rect").css("fill", bg_color); //background
+				$("#"+contador).find("rect").css("fill-opacity", 0.7); //background
+				$("#"+contador).find("tspan").css("fill", text_color); // texto
+				$("#"+contador).find("path").css("stroke", path_color); // haste
+				$("#"+contador).find("path").css("fill", "none"); // haste
+				$("#"+contador).find(".handle-2").css("stroke", path_color); // bolinha
 
+				
+				// ajuste tamanhos 
 				var width = +$("#"+contador).find("rect").width();
 				var height = +$("#"+contador).find("rect").height();
 
-				// var tam = Math.trunc(annotation_text.length/120) + Math.trunc(annotation_title/120) +1;
-				// console.log(tam);
-				// if(annotation_text.length > annotation_title.length){
-				// 	tam = annotation_text.length;
-				// } else {
-				// 	tam = annotation_title.length;
-				// }
-
-				// $("#"+contador).find()
-				// $("#"+contador).find("rect").attr("width", (tam*7.5) + width);
 				$("#"+contador).find("rect").attr("width", 50+width);
 				$("#"+contador).find("rect").attr("height", height+30);
 
@@ -403,37 +396,39 @@
 
 				$("#text").val('');
 				$("#title").val('');
-
     	}
 
     	// Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
     	function change_annotation(id){
-    		// pegar o conteúdo do título
+    		// inputando textos da anotação selecionada nos input text do modal de mudança do conteúdo da anotaçãoa
     		var title = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
     		var text = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
 
     		$("#title_change").val(title);
     		$("#text_change").val(text);
 
+    		document.getElementById("cont_title_change").innerHTML = title.length;
+    		document.getElementById("cont_text_change").innerHTML = text.length;
+
     		$("#modal_change").show();
 
     		$("#button_OK_change").click(function(){
     			$("#modal_change").hide();
-    			
-    			var width = +$("#"+contador).find("rect").width();
 
-    			var tam = 0;
-				
-				if($("#title_change").val().length > $("#text_change").val().length){
-					tam = $("#title_change").val().length;
-				} else {
-					tam = $("#text_change").val().length;
-				}
+				var an = annotations[id].annotations()[0];
 
-    			$("#"+id).find("rect").attr("width", (tam * 9) + 40);
-    			// $()
-    			$("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"] = $("#title_change").val();
-		        $("#"+id).find(".annotation-note-label").find("tspan")[0]["innerHTML"] = $("#text_change").val();
+				an.note.title =  $("#title_change").val();
+				an.note.label = $("#text_change").val();
+
+				annotations[id].updateText();
+
+				// ajuste tamanhos 
+				var width = +$("#"+id).find("rect").width();
+				var height = +$("#"+id).find("rect").height();
+
+				$("#"+id).find("rect").attr("width", 50+width);
+				$("#"+id).find("rect").attr("height", height+30);
+				$("#"+id).find("tspan").attr("x", "15");
     		});
 	    }
 
