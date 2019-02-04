@@ -293,6 +293,15 @@
 
 	    function count_caracter(element, id){
 	    	document.getElementById(id).innerHTML = element.value.length;
+
+	    	// document.getElementById(id).innerHTML = 250 - element.value.length;
+
+	    	// if (250 - element.value.length < 0){
+	    	// 	document.getElementById(id).style.color = "red";
+	    	// } else {
+	    	// 	document.getElementById(id).style.color = "grey";
+	    	// }
+
 	    }
 
 	    
@@ -305,6 +314,9 @@
             var text_color = $("#text_color").val();
 			var bg_color = $("#bg_color").val();
 			var path_color = $("#text_color").val();
+
+			document.getElementById("cont_title_create").innerHTML = "0";
+    		document.getElementById("cont_text_create").innerHTML = "0";
            	
            	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
             var canClick = true
@@ -312,6 +324,14 @@
             	if (canClick){
 	            	annotation_title = $("#title").val();
 	            	annotation_text = $("#text").val();
+
+	            	if(annotation_text == ""){
+	            		annotation_text = " ";
+	            	}
+
+	            	if(annotation_title == ""){
+	            		annotation_title = " ";
+	            	}
 
 					$("#modal_activate").hide();
 					map.on('click', onMapClick);
