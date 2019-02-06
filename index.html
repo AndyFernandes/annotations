@@ -103,20 +103,6 @@
 			                      	</div>
 			                    </div>
 		                    </div>
-
-		                    <!-- <div id = "modal_activate_position" class="bootbox modal fade bootbox-prompt show" tabindex="-1" role="dialog" style="padding-right: 15px; display: block;">
-			                    <div class="modal-dialog">
-			                      	<div class="modal-content">
-			                      		<div class="modal-header">
-			                      			
-			                      		</div>
-			                      		<div class="modal-footer">
-			                      			<button data-bb-handler="cancel" type="button" class="btn btn-default btn_cancel">Cancel</button>
-			                      			<button id = "button_OK_2" data-bb-handler="confirm" type="button" class="btn btn-primary">OK</button>
-			                      		</div>
-			                      	</div>
-			                    </div>
-		                    </div> -->
 		            	</div>
 		            </div>
 				</div>
@@ -147,6 +133,26 @@
 														<label>Contexto</label>
 				                      					<textarea id="text_change" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" onkeyup="count_caracter(this, 'cont_text_change')"></textarea>
 				                      					<span class="text-muted pull-right" id="cont_text_change">0</span>
+
+				                      					<div class="dropdown-divider"></div>
+				       									<br>
+
+				                      					<div id="type" class="section">
+							                                <div class="learn-more" id="schemes-learn-more" title="Learn more"></div>
+							                                
+							                                <label>Selecione as cores</label>
+
+							                                <div class="row" id="scheme">
+								                                <div class="colors"> 
+								                                	<label for="bg_color">Background color:  </label>
+								                                	<input type='text' id="bg_color_change" />
+								                            	</div>
+								                                <div class="colors">
+								                                	<label for="text_color">Text color:  </label>
+								                                	<input type='text' id="text_color_change" />
+								                                </div>
+								                            </div>                                         
+							                        </div>
 				                      				</form>
 				                      			</div>
 				                      		</div>
@@ -208,6 +214,42 @@
 		});
 
     	$("#text_color").spectrum({
+			showPalette: true,
+			showInitial: true,
+			showInput: true,
+			preferredFormat: "hex",
+			color: 'black',
+			palette: [
+						["#000",    "#444",    "#666",    "#999",    "#ccc",    "#eee",    "#f3f3f3", "#fff",    "#fff7fb", "#fff7ec"],
+						["#f00",    "#f90",    "#ff0",    "#0f0",    "#0ff",    "#00f",    "#90f",    "#f0f",    "#ece7f2", "#fee8c8"],
+						["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc", "#d0d1e6", "#fdd49e"],
+						["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd", "#a6bddb", "#fdbb84"],
+						["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0", "#74a9cf", "#fc8d59"],
+						["#c00",    "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79", "#3690c0", "#ef6548"],
+						["#900",    "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47", "#0570b0", "#b30000"],
+						["#600",    "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130", "#045a8d", "#7f0000"]
+					]
+		});
+
+		$("#bg_color_change ").spectrum({
+			showPalette: true,
+			showInitial: true,
+			showInput: true,
+			preferredFormat: "hex",
+			color: 'white',
+			palette: [
+						["#000",    "#444",    "#666",    "#999",    "#ccc",    "#eee",    "#f3f3f3", "#fff",    "#fff7fb", "#fff7ec"],
+						["#f00",    "#f90",    "#ff0",    "#0f0",    "#0ff",    "#00f",    "#90f",    "#f0f",    "#ece7f2", "#fee8c8"],
+						["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc", "#d0d1e6", "#fdd49e"],
+						["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd", "#a6bddb", "#fdbb84"],
+						["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0", "#74a9cf", "#fc8d59"],
+						["#c00",    "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79", "#3690c0", "#ef6548"],
+						["#900",    "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47", "#0570b0", "#b30000"],
+						["#600",    "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130", "#045a8d", "#7f0000"]
+					]
+		});
+
+    	$("#text_color_change").spectrum({
 			showPalette: true,
 			showInitial: true,
 			showInput: true,
