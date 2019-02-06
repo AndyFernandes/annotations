@@ -296,9 +296,23 @@
         function change(e){
             annotations.forEach((d,i) => {
                 var annotation = d.annotations()[0]
-                let newCoord = map.latLngToContainerPoint(annotation.data)
+                
+                // coordenadas
+                let newCoord = map.latLngToContainerPoint(annotation.data.data)
                 annotation._x = newCoord.x - margin.left
                 annotation._y = newCoord.y - margin.top
+
+                // cores
+                var id = annotation.data.id;
+                console.log(id);
+
+                var text_color = annotation.data.colors.text;
+
+                console.log(text_color);
+                // console.log($("#"+id).find("path")[2].attr("stroke", text_color));
+                $("#"+id).find("path").css("stroke", text_color);
+                $("#"+id).find("path").attr("stroke", text_color);
+                // .css("stroke", text_color); // haste
                 d.update()
             })
         };
@@ -408,7 +422,8 @@
 							                y: coordenadas[1] - margin.top,
 							    	        dx: 40,
 							    	        dy: -40,
-							                data: data,
+							                // data: data,
+							                data: {'data': data, 'id': contador, 'colors':{'text': text_color, 'bg': bg_color}},
 							                className: "show-bg"
 					    	    		}];
 					    	   
@@ -441,9 +456,7 @@
 				$("#"+contador).find("rect").css("fill", bg_color); //background
 				$("#"+contador).find("rect").css("fill-opacity", 0.7); //background
 				$("#"+contador).find("tspan").css("fill", text_color); // texto
-				// $("#"+contador).find("path").removeAttr("stroke"); // haste
-				$("#"+contador).find("path").css("stroke", path_color); // haste
-				$("#"+contador).find("path").css("fill", "none"); // haste
+				$("#"+contador).find("path").attr("style", "stroke: " + path_color + "; fill: none"); // haste
 				$("#"+contador).find(".handle-2").css("stroke", path_color); // bolinha
 
 				
@@ -468,6 +481,11 @@
 
     		$("#title_change").val(title);
     		$("#text_change").val(text);
+
+    		// $("#bg_color_change").val(
+    		// 	$("#"+id).find(rect).attr()
+    		// 	);
+    		// $("#text_color_change").val(text);
 
     		document.getElementById("cont_title_change").innerHTML = title.length;
     		document.getElementById("cont_text_change").innerHTML = text.length;
