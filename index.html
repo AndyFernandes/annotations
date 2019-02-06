@@ -354,10 +354,9 @@
 							    	            label: annotation_text,
 							    	            title: annotation_title,
 							    	            lineType: "vertical",
-							    	            padding: 10,
+							    	            padding: 25,
 							    	            wrap: 600,
-							    	            bgPadding: 30,
-							    	            right: 20
+							    	            bgPadding: {top: 25, left: 15, right: 10, bottom: 5}
 
 							    	        },
 							    	        connector: {
@@ -400,6 +399,7 @@
 				$("#"+contador).find("rect").css("fill", bg_color); //background
 				$("#"+contador).find("rect").css("fill-opacity", 0.7); //background
 				$("#"+contador).find("tspan").css("fill", text_color); // texto
+				// $("#"+contador).find("path").removeAttr("stroke"); // haste
 				$("#"+contador).find("path").css("stroke", path_color); // haste
 				$("#"+contador).find("path").css("fill", "none"); // haste
 				$("#"+contador).find(".handle-2").css("stroke", path_color); // bolinha

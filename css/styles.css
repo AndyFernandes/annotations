@@ -15,19 +15,14 @@ text {
 }
                 
 .title {             
-	font-weight:500;
+	font-weight: 500;
 }
                 
 :root {
 	--annotation-color: black;
 	--accent-color: #E8336D;
 }
-            
-.annotation path {
-	stroke: var(--annotation-color);
-	fill: none;
-}
-
+           
 .annotation path.connector-arrow, 
 .annotation path.connector-dot, 
 .annotation-note-label text,
@@ -41,17 +36,11 @@ text {
 }
 
 .annotation-note-bg {
-	fill: white;
+	/*fill: white;*/
 	opacity: 0.7;
 	border-radius: 90px;
 	padding-left: 10px;
 	margin-left: 25px;
-	/*width: 200px;
-	height: 90px;*/
-}
-
-rect {
-	border-radius: 100px;
 }
 
 .annotation-note-title, text.title {
@@ -71,10 +60,6 @@ rect {
 	fill-opacity: 0;
 	cursor: none;
 }
-/*circle.handle.highlight {
-	stroke-opacity: 1;
-}*/
-
 
 /* ############ PÁGINA ############*/
 html,
@@ -108,10 +93,6 @@ img {
     padding-bottom: 5px;
     padding-top: 5px;
     padding-left: 10px;
-}
-
-.colors {
-    margin-left: 5%;
 }
 
 
