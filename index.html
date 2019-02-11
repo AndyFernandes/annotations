@@ -393,6 +393,7 @@
            	// Variável utilizada para não deixar criar várias anotações de uma vez - Controle de cliques - só pode clicar uma vez
             var canClick = true
             $("#button_OK").click(function(){
+            	$('.leaflet-container').css('cursor', 'crosshair');
             	if (canClick){
 	            	var annotation_title = $("#title").val();
 	            	var annotation_text = $("#text").val();
@@ -409,9 +410,12 @@
 					map.on('click', onMapClick);
 			        
 					function onMapClick(e) {
+						
 					    if(canClick){
 					        canClick = false;
+					        $('.leaflet-container').css('cursor', 'grab');
 					     	create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color);
+
 						}
 				    };
 				}
