@@ -191,6 +191,7 @@
     <script type="text/javascript">
     	/////////////////////////////// START
     	$('.collapse').collapse();
+    	
     	$("#modal_activate").hide();
     	// $("#modal_activate_position").hide();
     	$("#modal_change").hide();
@@ -332,6 +333,12 @@
 
         
         ///////////////////////////////////////////////////////// FUNCTIONS JS
+	    $(window).resize(function() {
+	    	$("svg").attr("height", document.getElementById('map').offsetHeight);
+	    	$("svg").attr("width", document.getElementById('map').offsetWidth);
+	    });
+
+
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
@@ -369,7 +376,14 @@
             var annotation_text;
             var text_color = $("#text_color").val();
 			var bg_color = $("#bg_color").val();
-			var path_color = $("#text_color").val();
+
+
+    		if(text_color == ""){
+    			text_color = "black";
+    		}
+    		if(bg_color == ""){
+    			bg_color = "white";
+    		}
 
 			document.getElementById("cont_title_create").innerHTML = "0";
     		document.getElementById("cont_text_create").innerHTML = "0";
@@ -395,7 +409,7 @@
 					function onMapClick(e) {
 					    if(canClick){
 					        canClick = false;
-					     	create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color, path_color);
+					     	create_annotation([e.containerPoint.x,e.containerPoint.y], e.latlng, annotation_title, annotation_text, text_color, bg_color);
 						}
 				    };
 				}
@@ -403,7 +417,7 @@
         });
 
 
-        function create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color, path_color){
+        function create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color){
     		    // Criação do Json com as propriedades da anotação inputadas pelo user
     			const this_annotation = [{
 							    	        note: {
@@ -457,9 +471,9 @@
 				// Modificações das cores
 				$("#"+contador).find("rect").css("fill", bg_color); //background
 				$("#"+contador).find("rect").css("fill-opacity", 0.7); //background
-				// $("#"+contador).find("tspa").attr("fill", text_color); // texto
-				// // $("#"+contador).find("path").attr("style", "stroke: " + path_color + "; fill: none"); // haste
-				$("#"+contador).find(".handle-2").css("stroke", path_color); // bolinha
+				$("#"+contador).find("path").attr("stroke", text_color); // haste
+				$("#"+contador).find("path").attr("fill", "none"); // haste
+				$("#"+contador).find(".handle-2").css("stroke", text_color); // bolinha
 
 				
 				// ajuste tamanhos 
@@ -480,7 +494,6 @@
     		// inputando textos da anotação selecionada nos input text do modal de mudança do conteúdo da anotaçãoa
     		var an = annotations[id].annotations()[0];
 
-    		console.log(an);
     		var title = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
     		var text = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
 
@@ -516,11 +529,8 @@
 				// Modificações das cores
 				$("#"+id).find("rect").css("fill", bg_color); //background
 				$("#"+id).find("rect").css("fill-opacity", 0.7); //background
-				// $("#"+id).find("tspan").attr("fill", text_color); // texto
-				// // $("#"+id).find("tspan").css("fill", text_color); // texto
-				// // $("#"+id).find("text").attr("fill", text_color); // texto
-				// // $("#"+id).find("text").css("fill", text_color); // texto
 				$("#"+id).find("path").attr("stroke", text_color);
+				$("#"+id).find("path").attr("fill", "none");
 				$("#"+id).find(".handle-2").css("stroke", text_color); // bolinha
 
 				annotations[id].updateText();
