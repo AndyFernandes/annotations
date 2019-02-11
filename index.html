@@ -304,14 +304,14 @@
 
                 // cores
                 var id = annotation.data.id;
-                console.log(id);
+                // console.log(id);
 
                 var text_color = annotation.data.colors.text;
 
-                console.log(text_color);
+                // console.log(text_color);
                 // console.log($("#"+id).find("path")[2].attr("stroke", text_color));
-                $("#"+id).find("path").css("stroke", text_color);
-                $("#"+id).find("path").attr("stroke", text_color);
+                // $("#"+id).find("path").css("stroke", text_color);
+                // $("#"+id).find("path").attr("stroke", text_color);
                 // .css("stroke", text_color); // haste
                 d.update()
             })
@@ -418,6 +418,7 @@
 							    	        connector: {
 							    	            end: "arrow"
 							    	        },
+							    	        color: text_color,
 							                x: coordenadas[0] - margin.left,
 							                y: coordenadas[1] - margin.top,
 							    	        dx: 40,
@@ -450,13 +451,14 @@
 				$("#"+contador).find("rect").attr("rx", "10"); //background
 				$("#"+contador).find("rect").attr("ry", "10"); //background
 				$("#"+contador).find("tspan").attr("x", "15"); // margin-left tspan - elementos do text
+				$("#"+contador).find(".handle").attr("stroke", "none");
 
 
 				// Modificações das cores
 				$("#"+contador).find("rect").css("fill", bg_color); //background
 				$("#"+contador).find("rect").css("fill-opacity", 0.7); //background
-				$("#"+contador).find("tspan").css("fill", text_color); // texto
-				$("#"+contador).find("path").attr("style", "stroke: " + path_color + "; fill: none"); // haste
+				// $("#"+contador).find("tspa").attr("fill", text_color); // texto
+				// // $("#"+contador).find("path").attr("style", "stroke: " + path_color + "; fill: none"); // haste
 				$("#"+contador).find(".handle-2").css("stroke", path_color); // bolinha
 
 				
@@ -476,29 +478,50 @@
     	// Modificação das propriedades de uma anotação - Refere-se a aba de alterar anotação no menu
     	function change_annotation(id){
     		// inputando textos da anotação selecionada nos input text do modal de mudança do conteúdo da anotaçãoa
+    		var an = annotations[id].annotations()[0];
+
+    		console.log(an);
     		var title = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
     		var text = $("#"+id).find(".annotation-note-title").find("tspan")[0]["innerHTML"];
 
     		$("#title_change").val(title);
     		$("#text_change").val(text);
 
-    		// $("#bg_color_change").val(
-    		// 	$("#"+id).find(rect).attr()
-    		// 	);
-    		// $("#text_color_change").val(text);
-
+    		// contador de caracteres nos campos de texto
     		document.getElementById("cont_title_change").innerHTML = title.length;
     		document.getElementById("cont_text_change").innerHTML = text.length;
+
+    		// atribuição das cores
+    		var divs = $(".sp-preview-inner");
+
+   			$(divs[2]).attr("style", "background-color: " + an.data.colors.bg);
+   			$(divs[3]).attr("style", "background-color: " + an.data.colors.text);
 
     		$("#modal_change").show();
 
     		$("#button_OK_change").click(function(){
     			$("#modal_change").hide();
 
-				var an = annotations[id].annotations()[0];
-
 				an.note.title =  $("#title_change").val();
 				an.note.label = $("#text_change").val();
+
+				var bg_color = $("#bg_color_change").val();
+				var text_color = $("#text_color_change").val();
+
+
+				an.data.colors.bg = bg_color;
+				an.data.colors.text = text_color;
+				an.color = text_color;
+
+				// Modificações das cores
+				$("#"+id).find("rect").css("fill", bg_color); //background
+				$("#"+id).find("rect").css("fill-opacity", 0.7); //background
+				// $("#"+id).find("tspan").attr("fill", text_color); // texto
+				// // $("#"+id).find("tspan").css("fill", text_color); // texto
+				// // $("#"+id).find("text").attr("fill", text_color); // texto
+				// // $("#"+id).find("text").css("fill", text_color); // texto
+				$("#"+id).find("path").attr("stroke", text_color);
+				$("#"+id).find(".handle-2").css("stroke", text_color); // bolinha
 
 				annotations[id].updateText();
 
@@ -516,6 +539,7 @@
     		$(".annotation-group").off("click");
     		$(".annotation-group").on("click", function(){
 	    		change_annotation($(this)[0].id);
+	    		$(".annotation-group").off("click");
 	    	});
 	    });
 
@@ -524,6 +548,7 @@
 			$(".annotation-group").off("click");
 			$(".annotation-group").on("click", function(event){
 		    	$("#"+ $(this)[0].id).hide();
+		    	$(".annotation-group").off("click");
 	    	});
 	    	
 	    });
