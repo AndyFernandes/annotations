@@ -181,6 +181,8 @@
 		                </div>
 		            </div> 
 		        </div>
+
+		        <button type="button" id="teste" class="btn btn-block btn-outline-main">Teste</button>
 	    </navbar>
 
 	    <div class= "col-sm-8 col-lg-8">
@@ -303,6 +305,10 @@
                 annotation._x = newCoord.x - margin.left
                 annotation._y = newCoord.y - margin.top
                 d.update()
+
+                // console.log(d);
+                // console.log(annotation);
+                // console.log("-------------------------------");
             })
         };
 
@@ -330,6 +336,11 @@
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
 	    })
+
+	    $("#teste").click(function(){
+	    	
+	    });
+	    
 
 	    function count_caracter(element, id){
 	    	document.getElementById(id).innerHTML = element.value.length;
@@ -523,9 +534,11 @@
 
     	
 	    $("#select_annotation_remove").on("click", function(event2){
+
+
 			$(".annotation-group").off("click");
 			$(".annotation-group").on("click", function(event){
-		    	$("#"+ $(this)[0].id).hide();
+		    	$("#"+ $(this)[0].id).remove();
 		    	$(".annotation-group").off("click");
 	    	});
 	    	
