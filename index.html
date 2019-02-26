@@ -591,9 +591,44 @@
 	    	$(".annotation-group").remove();
 	    });
 
+	    function transformJSONtoHTML(json){
+	    	// console.log(json.type);
+	    	console.log(json);
+	    	// percorrer todo o content do elemento
+	    	if(json.content){
+	    		json.content.forEach((d, i) => {
+	    		// console.log(d);
+	    		if(d.type){
+	    			// console.log(d.type);
+	    			var element = document.createElement(d.type);
+	    			// console.log(d.attributes);
+	    			if(d.attributes){
+	    				console.log(d.attributes);
+	    				// d.attributes.forEach((d,i) => {
+		    			// 	// element.setAttribute()
+		    			// 	console.log(d);
+		    			// });
+	    			}
+	    			
+	    		}
+
+	    		transformJSONtoHTML(d);
+	    		})
+	    	}
+	    	
+	    	// transformJSONtoHTML(json.content);
+
+	    	// annotations_innerHtml.forEach((d, i) => {
+	    		// var g = document.createElement(d.htmlJson.type);
+	    		// console.log(d.htmlJson.type);
+	    	// })
+	    }
+
 	    $("#teste2").on("click", function(event){
 	    	console.log(annotations_innerHtml);
 	    	annotations_innerHtml.forEach((d,i) => {
+	    		// console.log(JSON.parse(d.htmlJson));
+	    		transformJSONtoHTML(JSON.parse(d.htmlJson));
 	    		$("svg").append(d.html);
 	    	});
 	    })
