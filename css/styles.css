@@ -3,31 +3,23 @@ svg {
     position: relative;  
 }
 
-path {
-    /*fill: none;*/
+.annotation-group path {
     stroke-width: 2px;
-    /*stroke: black;  ATENÇÃO!!!!!!*/
     stroke-opacity: 1;
 }
            
-text { 
+.annotation-group text { 
 	font-family: metric;
 }
                 
-.title {             
+.annotation-group .title {             
 	font-weight: 500;
 }
-                
-:root {
-	/*--annotation-color: black; /* ATENÇÃO!!!!!!*/*/
-	/*--accent-color: #E8336D; /* ATENÇÃO!!!!!!*/*/
-}
-           
+                       
 .annotation path.connector-arrow, 
 .annotation path.connector-dot, 
 .annotation-note-label text,
-.title text, .annotation text {
-	/*fill: black;  ATENÇÃO!!!!!!*/
+.annotation-group .title text, .annotation text {
 	font-size:1.4em;
 	margin-left: 5px;
 	text-align: justify;
@@ -36,7 +28,6 @@ text {
 }
 
 .annotation-note-bg {
-	/*fill: white;*/
 	opacity: 0.7;
 	border-radius: 90px;
 	padding-left: 10px;
@@ -48,19 +39,17 @@ text {
 }
 
 /*hide the handles*/
-.handle-2 {
-	/*stroke: black;   ATENÇÃO!!!!!!*/
+.annotation-group .handle-2 {
 	stroke-width: 3;
 	stroke-dasharray: 3;   
 	cursor: move;
 	fill: none;
 }
 
-.handle {
+.annotation-group .handle {
 	fill-opacity: 0;
 	stroke: none;
 	fill: none;
-	/*cursor: none;*/
 }
 
 /* ############ PÁGINA ############*/
@@ -96,6 +85,7 @@ img {
     padding-left: 10px;
 }
 
+/*#draw_annotation*/
 .colors {
     margin-left: 5%;
 }

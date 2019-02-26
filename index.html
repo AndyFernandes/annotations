@@ -22,9 +22,10 @@
 		    
 		    
 	<!-- IMPORTAÇÕES D3ANNOTATIONS & DEMAIS LIBS D3 -->
-	<script src="https://d3js.org/d3-geo.v1.min.js"></script>
-	<script src="http://d3js.org/d3.v4.min.js" type="text/javascript"></script>
-	<script src="js/d3-annotation.min.js"></script>
+	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/1.13.0/d3-annotation.min.js"></script> -->
+	 <script src="https://d3js.org/d3.v4.min.js"></script>
+	 <script src="js/d3-annotation.min.js"></script>
+	
 		    
 	<!-- BOOTSTRAP -->
 		    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -103,6 +104,8 @@
 			                      	</div>
 			                    </div>
 		                    </div>
+
+
 		            	</div>
 		            </div>
 				</div>
@@ -163,7 +166,6 @@
 				                      		</div>
 				                      	</div>
 				                    </div>
-			                   
 		                    </div>
 		            	</div>
 		            </div>     
@@ -183,6 +185,7 @@
 		        </div>
 
 		        <button type="button" id="teste" class="btn btn-block btn-outline-main">Teste</button>
+		        <button type="button" id="teste2" class="btn btn-block btn-outline-main">Teste 2</button>
 	    </navbar>
 
 	    <div class= "col-sm-8 col-lg-8">
@@ -273,8 +276,8 @@
     	///////////////////////////// START MAP AND SVG
         // Vetor de anotações
 		var annotations = [];
+		var annotations_innerHtml = [];
 		var contador = 0;
-
 
         var mapboxTiles = 	L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png', {
     	        						attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
@@ -294,7 +297,7 @@
           
         // Quando o mapa mover ou dar zoom as anotações serão reposicionadas no seu local de origem de criação
         map.on("zoom", change);
-        map.on("move", change);
+         map.on("move", change);
 
         function change(e){
             annotations.forEach((d,i) => {
@@ -305,10 +308,6 @@
                 annotation._x = newCoord.x - margin.left
                 annotation._y = newCoord.y - margin.top
                 d.update()
-
-                // console.log(d);
-                // console.log(annotation);
-                // console.log("-------------------------------");
             })
         };
 
@@ -325,7 +324,6 @@
 
         var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-        
         ///////////////////////////////////////////////////////// FUNCTIONS JS
 	    
 	    $(window).resize(function() {
@@ -335,24 +333,10 @@
 
 	    $(".btn_cancel").click(function(){
 	    	$(".modal").hide();
-	    })
-
-	    $("#teste").click(function(){
-	    	
 	    });
 	    
-
 	    function count_caracter(element, id){
 	    	document.getElementById(id).innerHTML = element.value.length;
-
-	    	// document.getElementById(id).innerHTML = 250 - element.value.length;
-
-	    	// if (250 - element.value.length < 0){
-	    	// 	document.getElementById(id).style.color = "red";
-	    	// } else {
-	    	// 	document.getElementById(id).style.color = "grey";
-	    	// }
-
 	    }
 
 	    function setValues(id, an){
@@ -382,8 +366,7 @@
 			$("#"+id).find("path").attr("stroke", text_color);
 			$("#"+id).find("path").attr("fill", "none");
 			$("#"+id).find(".handle-2").css("stroke", text_color); // bolinha
-    	}
-
+    	};
 	    
         $("#criar_anotacao").click(function(){
             $("#modal_activate").show();
@@ -434,7 +417,6 @@
 	    	});
         });
 
-
         function create_annotation(coordenadas, data, annotation_title, annotation_text, text_color, bg_color){
     		    // Criação do Json com as propriedades da anotação inputadas pelo user
     			const this_annotation = [{
@@ -475,7 +457,8 @@
 						    .attr("class","annotation-group")
 						    .call(makeThis)
 
-				
+				// annotations_innerHtml.push({"id": contador, "innerHTML": transformHTMLtoJSON(contador)});
+
 				// ajustes de margen + arredondamento do rect(background)
 				$("#"+contador).find(".annotation-note").find("circle").attr("class", "handle-2"); //background
 				$("#"+contador).find("rect").attr("rx", "10"); //background
@@ -527,22 +510,96 @@
     	$("#select_annotation_change").click(function(){
     		$(".annotation-group").off("click");
     		$(".annotation-group").on("click", function(){
-	    		change_annotation($(this)[0].id);
+	    		change_annotation(this.id);
 	    		$(".annotation-group").off("click");
 	    	});
 	    });
 
-    	
+    	// o problema: vou ter que reomver o 
 	    $("#select_annotation_remove").on("click", function(event2){
-
-
 			$(".annotation-group").off("click");
 			$(".annotation-group").on("click", function(event){
-		    	$("#"+ $(this)[0].id).remove();
+		    	$("#"+ this.id).remove();
+		    	console.log(annotations_innerHtml[this.id]);
 		    	$(".annotation-group").off("click");
-	    	});
-	    	
+	    	}); 	
 	    });
+
+	    function transformHTMLtoJSON(element){
+	    	// Test with a string.
+			// initElement = $("#"+id)[0].outerHTML;
+			var initElement = element;
+			json = mapDOM(initElement, true);
+			// console.log(json);
+			return json;
+
+			function mapDOM(element, json) {
+			    var treeObject = {};
+
+			    // If string convert to document Node
+			    if (typeof element === "string") {
+			        if (window.DOMParser) {
+			              parser = new DOMParser();
+			              docNode = parser.parseFromString(element,"text/xml");
+			        } else { // Microsoft strikes again
+			              docNode = new ActiveXObject("Microsoft.XMLDOM");
+			              docNode.async = false;
+			              docNode.loadXML(element); 
+			        } 
+			        element = docNode.firstChild;
+			    }
+
+			    //Recursively loop through DOM elements and assign properties to object
+			    function treeHTML(element, object) {
+			        object["type"] = element.nodeName;
+			        var nodeList = element.childNodes;
+			        if (nodeList != null) {
+			            if (nodeList.length) {
+			                object["content"] = [];
+			                for (var i = 0; i < nodeList.length; i++) {
+			                    if (nodeList[i].nodeType == 3) {
+			                        object["content"].push(nodeList[i].nodeValue);
+			                    } else {
+			                        object["content"].push({});
+			                        treeHTML(nodeList[i], object["content"][object["content"].length -1]);
+			                    }
+			                }
+			            }
+			        }
+			        if (element.attributes != null) {
+			            if (element.attributes.length) {
+			                object["attributes"] = {};
+			                for (var i = 0; i < element.attributes.length; i++) {
+			                    object["attributes"][element.attributes[i].nodeName] = element.attributes[i].nodeValue;
+			                }
+			            }
+			        }
+			    }
+			    treeHTML(element, treeObject);
+
+			    return (json) ? JSON.stringify(treeObject) : treeObject;
+			}
+	    };
+
+	    $("#teste").on("click", function(event){
+	    	var annot = document.querySelectorAll(".annotation-group");
+
+	    	annot.forEach((d, i) => {
+	    		annotations_innerHtml.push({"html": d, "htmlJson": transformHTMLtoJSON(d)});
+	    	})
+
+	    	$(".annotation-group").remove();
+	    });
+
+	    $("#teste2").on("click", function(event){
+	    	console.log(annotations_innerHtml);
+	    	annotations_innerHtml.forEach((d,i) => {
+	    		$("svg").append(d.html);
+	    	});
+	    })
+
+
+
     </script>
 </body>
 </html>
