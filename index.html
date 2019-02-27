@@ -440,7 +440,6 @@
 							                className: "show-bg"
 					    	    		}];
 					    	   
-
 				const makeThis = d3.annotation()
 									.type(d3.annotationLabel)
 								    .annotations(this_annotation)
@@ -448,6 +447,7 @@
 
 				// Adição da nova anotação no vetor de anotações
 				annotations.push(makeThis); 
+				annotations_innerHtml.push({"id": contador, "annotacao": this_annotation});
 				
 				// Agregando a anotação aos elementos gráficos 
 				var gg = g.append("g")
@@ -456,8 +456,6 @@
 						    .attr("transform","translate("+margin.left+","+margin.top+")")
 						    .attr("class","annotation-group")
 						    .call(makeThis)
-
-				// annotations_innerHtml.push({"id": contador, "innerHTML": transformHTMLtoJSON(contador)});
 
 				// ajustes de margen + arredondamento do rect(background)
 				$("#"+contador).find(".annotation-note").find("circle").attr("class", "handle-2"); //background
@@ -485,6 +483,7 @@
     		$("#button_OK_change").on('click', function(){
     			var an = annotations[id].annotations()[0];
 
+
 	    		$("#modal_change").hide();
 	    		$("#button_OK_change").off("click");
 
@@ -503,6 +502,25 @@
 				// Modificações das cores
 				applyColors(id, text_color, bg_color);
 
+				annotations_innerHtml.forEach((d, i) => {
+					if(d["id"] == id){
+						// data
+						console.log("--------------------");
+						d.annotacao[0].data.text = $("#text_change").val();
+						d.annotacao[0].data.title = $("#title_change").val();
+						d.annotacao[0].data.colors.bg = bg_color; 
+						d.annotacao[0].data.colors.text = text_color;
+
+						// settings
+						d.annotacao[0].note.label = $("#text_change").val();
+						d.annotacao[0].note.title = $("#title_change").val();
+						d.annotacao[0].color = text_color;
+
+						console.log("AFTER");
+						console.log(d.annotacao);
+					}
+				});
+
 				annotations[id].updateText();
     		});
 	    }
@@ -520,10 +538,16 @@
 			$(".annotation-group").off("click");
 			$(".annotation-group").on("click", function(event){
 		    	$("#"+ this.id).remove();
-		    	console.log(annotations_innerHtml[this.id]);
 		    	$(".annotation-group").off("click");
+
+		    	annotations_innerHtml.forEach((d, i) => {
+		    		if(d["id"] == this.id){
+		    			annotations_innerHtml.splice(i, 1);
+		    		}
+		    	});
 	    	}); 	
 	    });
+
 
 	    function transformHTMLtoJSON(element){
 	    	// Test with a string.
@@ -581,23 +605,11 @@
 			}
 	    };
 
-	    $("#teste").on("click", function(event){
-	    	var annot = document.querySelectorAll(".annotation-group");
-
-	    	annot.forEach((d, i) => {
-	    		annotations_innerHtml.push({"html": d, "htmlJson": transformHTMLtoJSON(d)});
-	    	})
-	    	annot = [];
-
-	    	$(".annotation-group").remove();
-	    });
-
 	    function transformJSONtoHTML(json){
 	    	var element_pai = document.createElement(json.type);
 	    	
 	    	if(json.attributes){
 	    		var chaves_atributes = Object.keys(json.attributes);
-	    		
 	    		chaves_atributes.forEach((chave,i) => {
 	    			element_pai.setAttribute(chave, json.attributes[chave]);
 	    		})	
@@ -619,25 +631,69 @@
 	    	return element_pai;
 	    }
 
-	    $("#teste2").on("click", function(event){
-	    	console.log(annotations_innerHtml);
-	    	annotations_innerHtml.forEach((d,i) => {
-	    		console.log(d.htmlJson);
-	    		console.log(JSON.parse(d.htmlJson));
+	    $("#teste").on("click", function(event){
+	    	// annotations_innerHtml = [];
+	    	annotations = [];
 
-	    		var element = transformJSONtoHTML(JSON.parse(d.htmlJson));
-	    		console.log(element);
-	    		// console.log(typeof element);
-	    		// console.log("--------------");
-	    		// console.log(d.html);
-	    		var g = document.querySelector(".leaflet-zoom-hide");
-				console.log(g);
-	    		// console.log(svg);
-	    		g.innerHTML +=  element.outerHTML + g.innerHTML;
-	    		// svg.appendChild(d.html);
-	    		// console.log(svg);
-	    	});
-	    	annotations_innerHtml = [];
+	    	$(".annotation-group").remove();
+	    });
+
+	    
+
+	    $("#teste2").on("click", function(event){
+	   //  	console.log(annotations_innerHtml);
+	   //  	annotations_innerHtml.forEach((d,i) => {
+	   //  		console.log(d.htmlJson);
+	   //  		console.log(JSON.parse(d.htmlJson));
+
+	   //  		var element = transformJSONtoHTML(JSON.parse(d.htmlJson));
+	   //  		console.log(element);
+	   //  		// console.log(typeof element);
+	   //  		// console.log("--------------");
+	   //  		// console.log(d.html);
+	   //  		var g = document.querySelector(".leaflet-zoom-hide");
+				// console.log(g);
+	   //  		// console.log(svg);
+	   //  		g.innerHTML +=  element.outerHTML + g.innerHTML;
+	   //  		// svg.appendChild(d.html);
+	   //  		// console.log(svg);
+	   //  	});
+	   //  	annotations_innerHtml = [];
+	    
+	   		annotations_innerHtml.forEach((d,i) => {
+	   			console.log(d.annotacao[0]);
+
+	   			const makeThis = d3.annotation()
+									.type(d3.annotationLabel)
+								    .annotations(d.annotacao)
+								    .editMode(true);
+
+				console.log(makeThis);
+
+				// Adição da nova anotação no vetor de anotações
+				annotations.push(makeThis); 
+				var id = d.id;
+				
+				// Agregando a anotação aos elementos gráficos 
+				var gg = g.append("g")
+							.attr("class", "leaflet-zoom-hide")
+					        .attr("id", `${id}`)
+						    .attr("transform","translate("+margin.left+","+margin.top+")")
+						    .attr("class","annotation-group")
+						    .call(makeThis);
+
+				// ajustes de margen + arredondamento do rect(background)
+				$("#"+id).find(".annotation-note").find("circle").attr("class", "handle-2"); //background
+				$("#"+id).find("rect").attr("rx", "10"); //background
+				$("#"+id).find("rect").attr("ry", "10"); //background
+				$("#"+id).find(".handle").attr("stroke", "none");
+
+				// Modificações das cores
+				applyColors(id, d.annotacao[0].data.colors.text, d.annotacao[0].data.colors.bg);
+
+
+	   		});
+	    	
 	    })
 
 
